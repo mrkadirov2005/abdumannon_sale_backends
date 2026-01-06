@@ -17,6 +17,7 @@ import statisticsRoutes from "./routes/statisticroutes.js";
 import reportRoutes from "./routes/reportroutes.js";
 import debtRoutes from "./routes/debtRoutes.js";
 import backupRoutes from "./routes/backupRoutes.js";
+import wagonRoutes from "./routes/wagonroutes.js";
 
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -193,7 +194,8 @@ app.use("/shop", shopRoutes);
 app.use("/sales", saleRoutes);
 app.use("/report",reportRoutes);
 app.use("/debts",debtRoutes);
-app.use("/backup", backupRoutes)
+app.use("/backup", backupRoutes);
+app.use("/wagons", wagonRoutes);
 
 
 // Start server after DB connection
