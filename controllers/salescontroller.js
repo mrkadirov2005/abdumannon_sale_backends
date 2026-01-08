@@ -240,7 +240,7 @@ export const deleteSale = async (req, res) => {
 };
 
 export const getSaleById = async (req, res) => {
-  const sale_id = req.headers["sale_id"];
+  const sale_id = req.body.sale_id;
   const target_id = extractJWT(req.headers["authorization"]);
   const user_id = req.headers["uuid"] || null;
 
