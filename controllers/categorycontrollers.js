@@ -32,7 +32,7 @@ export const createCategory = async (req, res) => {
     await logger(shop_id, user_id, `Category created successfully: ${category_name}`);
 
     return res.status(201).json({
-      message: "Category created successfully",
+      message: "Kategoriya muvaffaqiyatli yaratildi",
       category: response.rows[0],
     });
   } catch (error) {
@@ -40,7 +40,7 @@ export const createCategory = async (req, res) => {
 
     if (error.code === "23505") { // unique_violation
       await logger(shop_id, user_id, `Create category failed - category name already exists: ${category_name}`);
-      return res.status(400).json({ error: "Category name already exists" });
+      return res.status(400).json({ error: "Kategoriya nomi allaqachon mavjud" });
     }
 
     await logger(shop_id, user_id, `Create category failed - error: ${error.message}`);
@@ -59,13 +59,13 @@ export const getAllCategories = async (req, res) => {
 
     if (response.rows.length === 0) {
       await logger(shop_id, user_id, "Fetched all categories - no categories found");
-      return res.status(200).json({ message: "No categories found", data: [] });
+      return res.status(200).json({ message: "Kategoriya topilmadi", data: [] });
     }
 
     await logger(shop_id, user_id, `Fetched all categories - count: ${response.rows.length}`);
 
     return res.status(200).json({
-      message: "Successfully fetched all categories",
+      message: "Barcha kategoriyalar muvaffaqiyatli olingan",
       data: response.rows,
     });
 
@@ -94,7 +94,7 @@ export const getCategory = async (req, res) => {
 
     if (response.rows.length === 0) {
       await logger(shop_id, user_id, `Get category failed - category not found: ${id}`);
-      return res.status(404).json({ message: "Category not found" });
+      return res.status(404).json({ message: "Kategoriya topilmadi" });
     }
 
     await logger(shop_id, user_id, `Fetched single category: ${response.rows[0].category_name}`);
@@ -159,13 +159,13 @@ export const updateCategory = async (req, res) => {
 
     if (response.rows.length === 0) {
       await logger(shop_id, user_id, `Update category failed - category not found: ${id}`);
-      return res.status(404).json({ message: "Category not found" });
+      return res.status(404).json({ message: "Kategoriya topilmadi" });
     }
 
     await logger(shop_id, user_id, `Category updated successfully: ${response.rows[0].category_name}`);
 
     return res.status(200).json({
-      message: "Category updated successfully",
+      message: "Kategoriya muvaffaqiyatli yangilandi",
       category: response.rows[0],
     });
 
@@ -174,7 +174,7 @@ export const updateCategory = async (req, res) => {
 
     if (error.code === "23505") {
       await logger(shop_id, user_id, "Update category failed - category name already exists");
-      return res.status(400).json({ error: "Category name already exists" });
+      return res.status(400).json({ error: "Kategoriya nomi allaqachon mavjud" });
     }
 
     await logger(shop_id, user_id, `Update category failed - error: ${error.message}`);
@@ -203,7 +203,7 @@ export const deleteCategory = async (req, res) => {
 
     if (existing.rows.length === 0) {
       await logger(shop_id, user_id, `Delete category failed - category not found: ${id}`);
-      return res.status(404).json({ message: "Category not found" });
+      return res.status(404).json({ message: "Kategoriya topilmadi" });
     }
 
     const deleted = await client.query(
@@ -214,7 +214,7 @@ export const deleteCategory = async (req, res) => {
     await logger(shop_id, user_id, `Category deleted successfully: ${deleted.rows[0].category_name}`);
 
     return res.status(200).json({
-      message: "Category deleted successfully",
+      message: "Kategoriya muvaffaqiyatli o'chirildi",
       deleted_category: deleted.rows[0],
     });
 

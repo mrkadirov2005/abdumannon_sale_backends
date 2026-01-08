@@ -44,7 +44,7 @@ export const createsuperadmin = async (req, res) => {
     await logger(shop_id, user_id, `Superadmin created successfully - name: ${name} ${lastname}`);
 
     return res.status(201).json({
-      message: "Superadmin created successfully",
+      message: "Super admin muvaffaqiyatli yaratildi",
       superadmin: response.rows[0]
     });
 
@@ -62,7 +62,7 @@ export const updateSuperUser = async (req, res) => {
 
   if (uuid == null) {
     await logger(shop_id, user_id, "Update superadmin failed - missing UUID");
-    return res.status(400).json({ error: "Missing UUID in request body" });
+    return res.status(400).json({ error: "So'rovda UUID yo'q" });
   }
 
   if (name == null || lastname == null || email == null || phonenumber == null || password == null || shopname == null || img_url == null) {
@@ -82,13 +82,13 @@ export const updateSuperUser = async (req, res) => {
 
     if (response.rows.length === 0) {
       await logger(shop_id, user_id, `Update superadmin failed - superadmin not found: ${uuid}`);
-      return res.status(404).json({ error: "Superadmin not found" });
+      return res.status(404).json({ error: "Super admin topilmadi" });
     }
 
     await logger(shop_id, user_id, `Superadmin updated successfully - name: ${name} ${lastname}`);
 
     return res.status(200).json({
-      message: "Superadmin updated successfully",
+      message: "Super admin muvaffaqiyatli yangilandi",
       superadmin: response.rows[0]
     });
 
@@ -111,7 +111,7 @@ export const deleteSuperUser = async (req, res) => {
 
   if (secret_word !== secret_keys.superuser) {
     await logger(shop_id, user_id, "Delete superadmin failed - invalid secret word");
-    return res.status(403).json({ error: errorMessages.INVALID_CREDENTIALS });
+    return res.status(403).json({ error: "Noto'g'ri identifikatsion ma'lumotlar" });
   }
 
   try {
@@ -122,13 +122,13 @@ export const deleteSuperUser = async (req, res) => {
 
     if (response.rows.length === 0) {
       await logger(shop_id, user_id, `Delete superadmin failed - superadmin not found: ${uuid}`);
-      return res.status(404).json({ error: "Superadmin not found" });
+      return res.status(404).json({ error: "Super admin topilmadi" });
     }
 
     await logger(shop_id, user_id, `Superadmin deleted successfully - name: ${response.rows[0].name} ${response.rows[0].lastname}`);
 
     return res.status(200).json({
-      message: "Superadmin deleted successfully",
+      message: "Super admin muvaffaqiyatli o'chirildi",
       superadmin: response.rows[0]
     });
 

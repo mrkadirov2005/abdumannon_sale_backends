@@ -15,7 +15,7 @@ export const getSales = async (req, res) => {
   } catch (err) {
     console.error("Query error:", err);
     await logger(target_id, user_id, "Failed to fetch sales: " + err.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Server xatosi" });
   }
 };
 
@@ -39,7 +39,7 @@ export const createNewSale = async (req, res) => {
 
     if (Array.isArray(products) === false || products.length === 0) {
       await logger(target_id, user_id, "Create sale failed - products not a non-empty array");
-      return res.status(400).send({ message: "Products must be a non-empty array" });
+      return res.status(400).send({ message: "Mahsulotlar bo'sh bo'lmagan massiv bo'lishi kerak" });
     }
 
     const sales_id = String(uuidv4());
@@ -99,7 +99,7 @@ export const createNewSale = async (req, res) => {
           `Insufficient stock for product '${product_name}'`
         );
         return res.status(400).send({
-          message: `Not enough stock for product '${product_name}'`,
+          message: `Mahsulot uchun yetarli zaxira yo'q '${product_name}'`,
         });
       }
     }
@@ -171,7 +171,7 @@ export const createNewSale = async (req, res) => {
     );
 
     return res.status(201).send({
-      message: "Sale created successfully",
+      message: "Sotuv muvaffaqiyatli yaratildi",
       sales_id,
     });
   } catch (error) {
@@ -207,10 +207,10 @@ export const updateSale = async (req, res) => {
     const result = await client.query(query, values);
     if (result.rowCount === 0) {
       await logger(target_id, user_id, `Update sale failed - sale not found: ${sale_id}`);
-      return res.status(404).send({ message: "Sale not found" });
+      return res.status(404).send({ message: "Sotuv topilmadi" });
     }
     await logger(target_id, user_id, `Sale updated successfully: ${sale_id}`);
-    return res.status(200).send({ message: "Sale updated successfully" });
+    return res.status(200).send({ message: "Sotuv muvaffaqiyatli yangilandi" });
   } catch (error) {
     console.error("Error updating sale:", error);
     await logger(target_id, user_id, "Error updating sale: " + error.message);
@@ -228,10 +228,10 @@ export const deleteSale = async (req, res) => {
     const result = await client.query("DELETE FROM sales WHERE sale_id = $1", [sale_id]);
     if (result.rowCount === 0) {
       await logger(target_id, user_id, `Delete sale failed - sale not found: ${sale_id}`);
-      return res.status(404).send({ message: "Sale not found" });
+      return res.status(404).send({ message: "Sotuv topilmadi" });
     }
     await logger(target_id, user_id, `Sale deleted successfully: ${sale_id}`);
-    return res.status(200).send({ message: "Sale deleted successfully" });
+    return res.status(200).send({ message: "Sotuv muvaffaqiyatli o'chirildi" });
   } catch (error) {
     console.error("Error deleting sale:", error);
     await logger(target_id, user_id, "Error deleting sale: " + error.message);
@@ -249,7 +249,7 @@ export const getSaleById = async (req, res) => {
 
     if (saleResult.rows.length === 0) {
       await logger(target_id, user_id, `Sale not found: ${sale_id}`);
-      return res.status(404).send({ message: "Sale not found" });
+      return res.status(404).send({ message: "Sotuv topilmadi" });
     }
 
     const productsResult = await client.query("SELECT * FROM soldproduct WHERE salesid = $1", [sale_id]);
@@ -271,13 +271,13 @@ export const getAllSales = async (req, res) => {
   const target_id = extractJWT(req.headers["authorization"]);
   const {shop_id}=req.body;
   if(shop_id == null){
-    return res.status(400).json({message:"Error occured",data:[]})
+    return res.status(400).json({message:"Xato yuz berdi",data:[]})
   }
 
   try {
     const result = await client.query("SELECT * FROM sales where shop_id=$1",[shop_id]);
     await logger(target_id, target_id, "Fetched all sales");
-    return res.status(200).send({message:"Fetched successfully", data: result.rows });
+    return res.status(200).send({message:"Muvaffaqiyatli olingan", data: result.rows });
   } catch (error) {
     console.error("Error fetching all sales:", error);
     await logger(target_id, target_id, "Error fetching all sales: " + error.message);
@@ -294,7 +294,7 @@ export const getAdminSales = async (req, res) => {
     if (shop_id == null || admin_name == null) {
       return res.status(400).json({
         success: false,
-        message: "shop_id and admin_name are required",
+        message: "Shop_id va admin_name talab qilinadi",
       });
     }
 
@@ -313,7 +313,7 @@ export const getAdminSales = async (req, res) => {
     if (result.rowCount === 0) {
       return res.status(404).json({
         success: false,
-        message: "No sales found for this admin in this shop",
+        message: "Ushbu admin uchun ushbu do'konda sotuvlar topilmadi",
         data: [],
       });
     }
@@ -321,7 +321,7 @@ export const getAdminSales = async (req, res) => {
     // 4️⃣ Success
     return res.status(200).json({
       success: true,
-      message: "Sales fetched successfully",
+      message: "Sotuvlar muvaffaqiyatli olingan",
       count: result.rowCount,
       data: result.rows,
     });
@@ -332,7 +332,7 @@ export const getAdminSales = async (req, res) => {
     // 5️⃣ Server error
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Server xatosi",
     });
   }
 };

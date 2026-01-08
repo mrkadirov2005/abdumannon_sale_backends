@@ -26,7 +26,7 @@ export const getAllWagons = async (req, res) => {
     await logger(target_id, user_id, "Failed to fetch wagons: " + err.message);
     res.status(500).json({ 
       success: false, 
-      error: "Internal Server Error",
+      error: "Server xatosi",
       message: err.message 
     });
   }
@@ -58,7 +58,7 @@ export const getWagonById = async (req, res) => {
       await logger(target_id, user_id, `Wagon not found with ID: ${id}`);
       return res.status(404).json({
         success: false,
-        message: "Wagon not found",
+        message: "Vagon topilmadi",
       });
     }
 
@@ -72,7 +72,7 @@ export const getWagonById = async (req, res) => {
     await logger(target_id, user_id, "Failed to fetch wagon: " + err.message);
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      error: "Server xatosi",
       message: err.message,
     });
   }
@@ -90,7 +90,7 @@ export const getWagonByNumber = async (req, res) => {
     await logger(target_id, user_id, "Get wagon failed - missing wagon number");
     return res.status(400).json({
       success: false,
-      message: "Wagon number is required",
+      message: "Vagon raqami talab qilinadi",
     });
   }
 
@@ -104,7 +104,7 @@ export const getWagonByNumber = async (req, res) => {
       await logger(target_id, user_id, `Wagon not found: ${wagon_number}`);
       return res.status(404).json({
         success: false,
-        message: "Wagon not found",
+        message: "Vagon topilmadi",
       });
     }
 
@@ -118,7 +118,7 @@ export const getWagonByNumber = async (req, res) => {
     await logger(target_id, user_id, "Failed to fetch wagon: " + err.message);
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      error: "Server xatosi",
       message: err.message,
     });
   }
@@ -143,7 +143,7 @@ export const createWagon = async (req, res) => {
     await logger(target_id, user_id, "Create wagon failed - missing wagon number");
     return res.status(400).json({
       success: false,
-      message: "Wagon number is required",
+      message: "Vagon raqami talab qilinadi",
     });
   }
 
@@ -206,7 +206,7 @@ export const createWagon = async (req, res) => {
     await logger(target_id, user_id, `Created wagon: ${wagon_number}`);
     return res.status(201).json({
       success: true,
-      message: "Wagon created successfully",
+      message: "Vagon muvaffaqiyatli yaratildi",
       data: result.rows[0],
     });
   } catch (err) {
@@ -217,14 +217,14 @@ export const createWagon = async (req, res) => {
       await logger(target_id, user_id, `Wagon number already exists: ${wagon_number}`);
       return res.status(409).json({
         success: false,
-        message: "Wagon number already exists",
+        message: "Vagon raqami allaqachon mavjud",
       });
     }
 
     await logger(target_id, user_id, "Failed to create wagon: " + err.message);
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      error: "Server xatosi",
       message: err.message,
     });
   }
@@ -250,7 +250,7 @@ export const updateWagon = async (req, res) => {
     await logger(target_id, user_id, "Update wagon failed - missing ID");
     return res.status(400).json({
       success: false,
-      message: "Wagon ID is required",
+      message: "Vagon ID talab qilinadi",
     });
   }
 
@@ -265,7 +265,7 @@ export const updateWagon = async (req, res) => {
       await logger(target_id, user_id, `Update failed - wagon not found: ${id}`);
       return res.status(404).json({
         success: false,
-        message: "Wagon not found",
+        message: "Vagon topilmadi",
       });
     }
 
@@ -345,7 +345,7 @@ export const updateWagon = async (req, res) => {
       await logger(target_id, user_id, "Update wagon failed - no fields to update");
       return res.status(400).json({
         success: false,
-        message: "No fields to update",
+        message: "Yangilash uchun maydonlar yo'q",
       });
     }
 
@@ -362,7 +362,7 @@ export const updateWagon = async (req, res) => {
     await logger(target_id, user_id, `Updated wagon: ${id}`);
     return res.status(200).json({
       success: true,
-      message: "Wagon updated successfully",
+      message: "Vagon muvaffaqiyatli yangilandi",
       data: result.rows[0],
     });
   } catch (err) {
@@ -373,7 +373,7 @@ export const updateWagon = async (req, res) => {
       await logger(target_id, user_id, `Wagon number already exists`);
       return res.status(409).json({
         success: false,
-        message: "Wagon number already exists",
+        message: "Vagon raqami allaqachon mavjud",
       });
     }
 
@@ -398,7 +398,7 @@ export const deleteWagon = async (req, res) => {
     await logger(target_id, user_id, "Delete wagon failed - missing ID");
     return res.status(400).json({
       success: false,
-      message: "Wagon ID is required",
+      message: "Vagon ID talab qilinadi",
     });
   }
 
@@ -412,14 +412,14 @@ export const deleteWagon = async (req, res) => {
       await logger(target_id, user_id, `Delete failed - wagon not found: ${id}`);
       return res.status(404).json({
         success: false,
-        message: "Wagon not found",
+        message: "Vagon topilmadi",
       });
     }
 
     await logger(target_id, user_id, `Deleted wagon: ${id}`);
     return res.status(200).json({
       success: true,
-      message: "Wagon deleted successfully",
+      message: "Vagon muvaffaqiyatli o'chirildi",
       data: result.rows[0],
     });
   } catch (err) {
@@ -427,7 +427,7 @@ export const deleteWagon = async (req, res) => {
     await logger(target_id, user_id, "Failed to delete wagon: " + err.message);
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      error: "Server xatosi",
       message: err.message,
     });
   }
@@ -445,7 +445,7 @@ export const getWagonsByIndicator = async (req, res) => {
     await logger(target_id, user_id, "Get wagons by indicator failed - missing indicator");
     return res.status(400).json({
       success: false,
-      message: "Indicator is required",
+      message: "Ko'rsatkich talab qilinadi",
     });
   }
 
@@ -474,7 +474,7 @@ export const getWagonsByIndicator = async (req, res) => {
     await logger(target_id, user_id, "Failed to fetch wagons by indicator: " + err.message);
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      error: "Server xatosi",
       message: err.message,
     });
   }
@@ -492,7 +492,7 @@ export const getWagonsByShop = async (req, res) => {
     await logger(target_id, user_id, "Get wagons by shop failed - missing shop_id");
     return res.status(400).json({
       success: false,
-      message: "Shop ID is required",
+      message: "Shop ID talab qilinadi",
     });
   }
 
@@ -513,7 +513,7 @@ export const getWagonsByShop = async (req, res) => {
     await logger(target_id, user_id, "Failed to fetch wagons by shop: " + err.message);
     res.status(500).json({
       success: false,
-      error: "Internal Server Error",
+      error: "Server xatosi",
       message: err.message,
     });
   }

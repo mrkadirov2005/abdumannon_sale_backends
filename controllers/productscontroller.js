@@ -20,7 +20,7 @@ export const getProducts = async (req, res) => {
     
     const target_id=extractJWT(req.headers["authorization"])
     await logger(target_id, req.headers["uuid"] || null, "Failed to fetch all products");
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Server xatosi" });
   }
 };
 
@@ -33,7 +33,7 @@ const shop_id = req.body.shop_id || null;
     
     const target_id=extractJWT(req.headers["authorization"])
     await logger(target_id, user_id, "Failed to get shop products: missing shop_id header");
-    return res.status(400).json({ message: "shop_id header is required", data: [] });
+    return res.status(400).json({ message: "Shop_id header talab qilinadi", data: [] });
   }
 
   try {
@@ -41,15 +41,15 @@ const shop_id = req.body.shop_id || null;
 
     if (products.rowCount === 0) {
       await logger(shop_id, user_id, "No products found for shop");
-      return res.status(404).json({ message: "No products found", data: products.rows });
+      return res.status(404).json({ message: "Mahsulot topilmadi", data: products.rows });
     }
 
     const lg=await logger(shop_id, user_id, "Fetched products for shop"); 
-    return res.status(200).json({ message: "Successfully found", data: products.rows });
+    return res.status(200).json({ message: "Muvaffaqiyatli topildi", data: products.rows });
   } catch (error) {
     console.error("Error fetching products:", error);
     await logger(shop_id, user_id, "Error fetching products for shop: " + error.message);
-    return res.status(500).json({ message: "Internal server error", error: error.message });
+    return res.status(500).json({ message: "Server xatosi", error: error.message });
   }
 };
 
@@ -69,7 +69,7 @@ export const getSingleProduct = async (req, res) => {
     
     const target_id=extractJWT(req.headers["authorization"])
     await logger(target_id, user_id, "Missing product id in getSingleProduct");
-    return res.status(400).json({ message: "id is required for this operation" });
+    return res.status(400).json({ message: "ushbu operatsiya uchun id talab qilinadi" });
   }
 
   try {
@@ -79,7 +79,7 @@ export const getSingleProduct = async (req, res) => {
       
       const target_id=extractJWT(req.headers["authorization"])
       await logger(target_id, user_id, `Product not found for id ${id}`);
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ error: "Mahsulot topilmadi" });
     }
 
     
@@ -91,7 +91,7 @@ export const getSingleProduct = async (req, res) => {
     
     const target_id=extractJWT(req.headers["authorization"])
     await logger(target_id, user_id, "Error fetching single product: " + err.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Server xatosi" });
   }
 };
 
@@ -104,7 +104,7 @@ export const createNewProduct = async (req, res) => {
     
     const target_id=extractJWT(req.headers["authorization"])
     await logger(target_id, req.headers["uuid"] || null, "Request body missing in createNewProduct");
-    return res.status(400).json({ message: "Request body is missing" });
+    return res.status(400).json({ message: "So'rov tanasi etishmayapti" });
   }
 
   const {
@@ -145,7 +145,7 @@ export const createNewProduct = async (req, res) => {
     await logger(shop_id, user_id, "Missing required fields in createNewProduct");
     console.log(req.body)
     return res.status(400).json({
-      message: "Missing required fields"
+      message: "Kerakli maydonlar etishmayapti"
     });
   }
 
@@ -193,7 +193,7 @@ export const createNewProduct = async (req, res) => {
     await logger(shop_id, user_id, `Product created: ${response.rows[0].id}`);
 
     return res.status(201).json({
-      message: "Product created successfully",
+      message: "Mahsulot muvaffaqiyatli yaratildi",
       data: response.rows
     });
 
@@ -215,12 +215,12 @@ export const updateProduct = async (req, res) => {
 
   if (id == null) {
     await logger(shop_id, user_id, "Product update failed - missing product ID");
-    return res.status(400).json({ message: "Product ID is required" });
+    return res.status(400).json({ message: "Mahsulot ID talab qilinadi" });
   }
 
   if (req.body == null || Object.keys(req.body).length === 0) {
     await logger(shop_id, user_id, "Product update failed - no data provided");
-    return res.status(400).json({ message: "No data provided to update" });
+    return res.status(400).json({ message: "Yangilash uchun hech qanday ma'lumot berilmadi" });
   }
 
   const {
@@ -294,13 +294,13 @@ export const updateProduct = async (req, res) => {
 
     if (response.rowCount === 0) {
       await logger(shop_id, user_id, `Product update failed - product not found: ${id}`);
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({ message: "Mahsulot topilmadi" });
     }
 
     await logger(shop_id, user_id, `Product updated: ${id}`);
 
     return res.status(200).json({
-      message: "Product updated successfully",
+      message: "Mahsulot muvaffaqiyatli yangilandi",
       data: response.rows[0]
     });
 
@@ -308,7 +308,7 @@ export const updateProduct = async (req, res) => {
     console.error("Error updating product:", error);
     await logger(shop_id, user_id, "Error updating product: " + error.message);
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Server xatosi",
       error: error.message
     });
   }
@@ -322,7 +322,7 @@ export const restockProduct = async (req, res) => {
 
   if (id == null) {
     await logger(shop_id, user_id, "Restock failed - missing product ID");
-    return res.status(400).json({ message: "Product ID is required" });
+    return res.status(400).json({ message: "Mahsulot ID talab qilinadi" });
   }
 
   const stock = availability + total;
@@ -344,13 +344,13 @@ export const restockProduct = async (req, res) => {
 
     if (response.rowCount === 0) {
       await logger(shop_id, user_id, `Restock failed - product not found: ${id}`);
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({ message: "Mahsulot topilmadi" });
     }
 
     await logger(shop_id, user_id, `Product restocked: ${id} (added ${total})`);
 
     return res.status(200).json({
-      message: "Product restocked successfully",
+      message: "Mahsulot muvaffaqiyatli qayta to'ldirildi",
       data: response.rows,
     });
 
@@ -358,7 +358,7 @@ export const restockProduct = async (req, res) => {
     console.error("Error restocking product:", error);
     await logger(shop_id, user_id, "Error restocking product: " + error.message);
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Server xatosi",
       error: error.message,
     });
   }
@@ -379,7 +379,7 @@ export const deleteProduct = async (req, res) => {
 
   if (id == null) {
     await logger(shop_id, user_id, "Delete product failed - missing product ID");
-    return res.status(400).json({ message: "Product ID is required" });
+    return res.status(400).json({ message: "Mahsulot ID talab qilinadi" });
   }
 
   try {
@@ -393,13 +393,13 @@ export const deleteProduct = async (req, res) => {
 
     if (response.rowCount === 0) {
       await logger(shop_id, user_id, `Delete product failed - product not found: ${id}`);
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({ message: "Mahsulot topilmadi" });
     }
 
     await logger(shop_id, user_id, `Product deleted: ${id}`);
 
     return res.status(200).json({
-      message: "Product deleted successfully",
+      message: "Mahsulot muvaffaqiyatli o'chirildi",
       data: response.rows
     });
 

@@ -51,7 +51,7 @@ export const generateSuperAdminToken = async (req, res) => {
     await logger(null, uuid, "Generated SuperAdmin Tokens");
 
     return res.status(200).json({
-      message: "Tokens generated",
+      message: "Tokenlar yaratildi",
       accessToken,
       refreshToken
     });
@@ -59,7 +59,7 @@ export const generateSuperAdminToken = async (req, res) => {
   } catch (error) {
     console.error("Token generation error:", error);
     await logger(null, uuid, "Generate SuperAdmin Token ERROR");
-    return res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server xatosi" });
   }
 };
 
@@ -85,7 +85,7 @@ export const generateAdminToken = async (req, res) => {
 
     if (isAdminFound.rows.length === 0) {
       await logger(null, uuid, "Generate Admin Token FAILED - not found");
-      return res.status(404).json({ message: "Admin not found" });
+      return res.status(404).json({ message: "Admin topilmadi" });
     }
 
     const refreshToken = jwt.sign(
@@ -103,7 +103,7 @@ export const generateAdminToken = async (req, res) => {
     await logger(null, uuid, "Generated Admin Tokens");
 
     return res.status(200).json({
-      message: "Tokens generated",
+      message: "Tokenlar yaratildi",
       accessToken,
       refreshToken
     });
@@ -111,7 +111,7 @@ export const generateAdminToken = async (req, res) => {
   } catch (error) {
     console.error("Token generation error:", error);
     await logger(null, uuid, "Generate Admin Token ERROR");
-    return res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server xatosi" });
   }
 };
 
@@ -141,7 +141,7 @@ export const loginSuperUser = async (req, res) => {
 
     if (user == null) {
       await logger(null, name, "SuperUser Login FAILED - not found");
-      return res.status(404).json({ message: "Superuser not found" });
+      return res.status(404).json({ message: "Super admin topilmadi" });
     }
 
     // CREATE ACCESS TOKEN
@@ -165,7 +165,7 @@ export const loginSuperUser = async (req, res) => {
     await logger(user.shop_id, name, "Super logged in");
 
     return res.status(200).json({
-      message: "Login successful",
+      message: "Kirish muvaffaqiyatli",
       accessToken,
       refreshToken: user.refreshtoken,
       user,
@@ -174,7 +174,7 @@ export const loginSuperUser = async (req, res) => {
   } catch (error) {
     console.error("Login error:", error);
     await logger(null, name, "SuperUser Login ERROR");
-    return res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server xatosi" });
   }
 };
 
@@ -201,7 +201,7 @@ export const loginAdmin = async (req, res) => {
 
     if (isAdminFound.rows.length === 0) {
       await logger(null, name, "Admin Login FAILED - not found");
-      return res.status(404).json({ message: "Admin not found" });
+      return res.status(404).json({ message: "Admin topilmadi" });
     }
 
     const accessToken = jwt.sign(
@@ -220,7 +220,7 @@ export const loginAdmin = async (req, res) => {
     await logger(null, name, "Admin Logged In");
 
     return res.status(200).json({
-      message: "Login successful",
+      message: "Kirish muvaffaqiyatli",
       accessToken,
       refreshToken: isAdminFound.rows[0].refreshtoken,
       user: isAdminFound.rows[0]
@@ -229,7 +229,7 @@ export const loginAdmin = async (req, res) => {
   } catch (error) {
     console.error("Login error:", error);
     await logger(null, name, "Admin Login ERROR");
-    return res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server xatosi" });
   }
 };
 
@@ -259,7 +259,7 @@ export const handleLogOut = async (req, res) => {
 
       await logger(null, uuid, "Admin logged out");
 
-      return res.status(200).json({ message: "Admin logged out successfully" });
+      return res.status(200).json({ message: "Admin muvaffaqiyatli chiqdi" });
     }
 
     if (role === "superuser") {
@@ -277,15 +277,15 @@ export const handleLogOut = async (req, res) => {
 
       await logger(null, uuid, "Superuser logged out");
 
-      return res.status(200).json({ message: "Superuser logged out successfully" });
+      return res.status(200).json({ message: "Super admin muvaffaqiyatli chiqdi" });
     }
 
     // If role is neither admin nor superuser
-    return res.status(400).json({ message: "Invalid role provided" });
+    return res.status(400).json({ message: "Noto'g'ri rol berilgan" });
 
   } catch (error) {
     console.error("Logout error:", error);
     await logger(null, uuid, "Logout ERROR");
-    return res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server xatosi" });
   }
 };

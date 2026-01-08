@@ -12,7 +12,7 @@ export const getAllDebts = async (req, res) => {
 
     if (shop_id == null) {
         await logger(shop_id, user_id, "Get all debts failed - missing shop_id");
-        return res.status(400).json({ message: "Missing shop_id" });
+        return res.status(400).json({ message: "Shop_id etishmayapti" });
     }
 
     try {
@@ -24,13 +24,13 @@ export const getAllDebts = async (req, res) => {
         await logger(shop_id, user_id, `Fetched all debts - count: ${result.rows.length}`);
 
         return res.status(200).json({
-            message: "Successfully fetched debts",
+            message: "Qarzlar muvaffaqiyatli olingan",
             data: result.rows
         });
     } catch (err) {
         console.error("Error fetching debts:", err);
         await logger(shop_id, user_id, `Get all debts failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -42,7 +42,7 @@ export const getDebtById = async (req, res) => {
 
     if (id == null) {
         await logger(shop_id, user_id, "Get debt by ID failed - missing debt ID");
-        return res.status(400).json({ message: "Debt ID required" });
+        return res.status(400).json({ message: "Qarz ID talab qilinadi" });
     }
 
     try {
@@ -53,19 +53,19 @@ export const getDebtById = async (req, res) => {
 
         if (result.rows.length === 0) {
             await logger(shop_id, user_id, `Get debt by ID failed - debt not found: ${id}`);
-            return res.status(404).json({ message: "Debt not found" });
+            return res.status(404).json({ message: "Qarz topilmadi" });
         }
 
         await logger(shop_id, user_id, `Fetched debt by ID: ${id}`);
 
         return res.status(200).json({
-            message: "Successfully fetched debt",
+            message: "Qarz muvaffaqiyatli olingan",
             data: result.rows[0]
         });
     } catch (err) {
         console.error("Error fetching debt:", err);
         await logger(shop_id, user_id, `Get debt by ID failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -77,7 +77,7 @@ export const getDebtsByBranch = async (req, res) => {
 
     if (branch_id == null) {
         await logger(shop_id, user_id, "Get debts by branch failed - missing branch_id");
-        return res.status(400).json({ message: "Missing branch_id" });
+        return res.status(400).json({ message: "Branch_id etishmayapti" });
     }
 
     try {
@@ -89,13 +89,13 @@ export const getDebtsByBranch = async (req, res) => {
         await logger(shop_id, user_id, `Fetched debts by branch: ${branch_id} - count: ${result.rows.length}`);
 
         return res.status(200).json({
-            message: "Successfully fetched debts",
+            message: "Qarzlar muvaffaqiyatli olingan",
             data: result.rows
         });
     } catch (err) {
         console.error("Error fetching debts by branch:", err);
         await logger(shop_id, user_id, `Get debts by branch failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -106,7 +106,7 @@ export const getDebtsByCustomer = async (req, res) => {
 
     if (name == null || shop_id == null) {
         await logger(shop_id, user_id, "Get debts by customer failed - missing required fields");
-        return res.status(400).json({ message: "Missing required fields" });
+        return res.status(400).json({ message: "Kerakli maydonlar etishmayapti" });
     }
 
     try {
@@ -118,13 +118,13 @@ export const getDebtsByCustomer = async (req, res) => {
         await logger(shop_id, user_id, `Fetched debts by customer: ${name} - count: ${result.rows.length}`);
 
         return res.status(200).json({
-            message: "Successfully fetched debts",
+            message: "Qarzlar muvaffaqiyatli olingan",
             data: result.rows
         });
     } catch (err) {
         console.error("Error fetching debts by customer:", err);
         await logger(shop_id, user_id, `Get debts by customer failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -135,7 +135,7 @@ export const getUnreturnedDebts = async (req, res) => {
 
     if (shop_id == null) {
         await logger(shop_id, user_id, "Get unreturned debts failed - missing shop_id");
-        return res.status(400).json({ message: "Missing shop_id"+shop_id });
+        return res.status(400).json({ message: "Shop_id etishmayapti" });
     }
 
     try {
@@ -147,13 +147,13 @@ export const getUnreturnedDebts = async (req, res) => {
         await logger(shop_id, user_id, `Fetched unreturned debts - count: ${result.rows.length}`);
 
         return res.status(200).json({
-            message: "Successfully fetched unreturned debts",
+            message: "Qaytarilinmagan qarzlar muvaffaqiyatli olingan",
             data: result.rows
         });
     } catch (err) {
         console.error("Error fetching unreturned debts:", err);
         await logger(shop_id, user_id, `Get unreturned debts failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -174,7 +174,7 @@ export const createDebt = async (req, res) => {
     // Validate required fields
     if (name == null || amount == null || product_names == null || branch_id==null || shop_id == null || admin_id == null) {
         await logger(shop_id, user_id, "Create debt failed - missing required fields");
-        return res.status(400).json({ message: "Missing required fields" });
+        return res.status(400).json({ message: "Kerakli maydonlar etishmayapti" });
     }
 
     const id = uuidv4();
@@ -203,13 +203,13 @@ export const createDebt = async (req, res) => {
         await logger(shop_id, user_id, `Debt created successfully - customer: ${name}, amount: ${amount}`);
 
         return res.status(201).json({
-            message: "Debt created successfully",
+            message: "Qarz muvaffaqiyatli yaratildi",
             data: result.rows[0]
         });
     } catch (err) {
         console.error("Error creating debt:", err);
         await logger(shop_id, user_id, `Create debt failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -228,7 +228,7 @@ export const updateDebt = async (req, res) => {
 
     if (id == null) {
         await logger(shop_id, user_id, "Update debt failed - missing debt ID");
-        return res.status(400).json({ message: "Debt ID is required" });
+        return res.status(400).json({ message: "Qarz ID talab qilinadi" });
     }
 
     const query = `
@@ -251,19 +251,19 @@ export const updateDebt = async (req, res) => {
 
         if (result.rows.length === 0) {
             await logger(shop_id, user_id, `Update debt failed - debt not found: ${id}`);
-            return res.status(404).json({ message: "Debt not found" });
+            return res.status(404).json({ message: "Qarz topilmadi" });
         }
 
         await logger(shop_id, user_id, `Debt updated successfully: ${id}`);
 
         return res.status(200).json({
-            message: "Debt updated successfully",
+            message: "Qarz muvaffaqiyatli yangilandi",
             data: result.rows[0]
         });
     } catch (err) {
         console.error("Error updating debt:", err);
         await logger(shop_id, user_id, `Update debt failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -275,7 +275,7 @@ export const markDebtAsReturned = async (req, res) => {
 
     if (id == null) {
         await logger(shop_id, user_id, "Mark debt as returned failed - missing debt ID");
-        return res.status(400).json({ message: "Debt ID is required" });
+        return res.status(400).json({ message: "Qarz ID talab qilinadi" });
     }
 
     try {
@@ -286,19 +286,19 @@ export const markDebtAsReturned = async (req, res) => {
 
         if (result.rows.length === 0) {
             await logger(shop_id, user_id, `Mark debt as returned failed - debt not found: ${id}`);
-            return res.status(404).json({ message: "Debt not found" });
+            return res.status(404).json({ message: "Qarz topilmadi" });
         }
 
         await logger(shop_id, user_id, `Debt marked as returned: ${id} - customer: ${result.rows[0].name}`);
 
         return res.status(200).json({
-            message: "Debt marked as returned successfully",
+            message: "Qarz qaytarilgan deb belgilandi",
             data: result.rows[0]
         });
     } catch (err) {
         console.error("Error marking debt as returned:", err);
         await logger(shop_id, user_id, `Mark debt as returned failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -310,7 +310,7 @@ export const deleteDebt = async (req, res) => {
 
     if (id == null) {
         await logger(shop_id, user_id, "Delete debt failed - missing debt ID");
-        return res.status(400).json({ message: "Debt ID required" });
+        return res.status(400).json({ message: "Qarz ID talab qilinadi" });
     }
 
     try {
@@ -321,19 +321,19 @@ export const deleteDebt = async (req, res) => {
 
         if (result.rows.length === 0) {
             await logger(shop_id, user_id, `Delete debt failed - debt not found: ${id}`);
-            return res.status(404).json({ message: "Debt not found" });
+            return res.status(404).json({ message: "Qarz topilmadi" });
         }
 
         await logger(shop_id, user_id, `Debt deleted successfully: ${id} - customer: ${result.rows[0].name}`);
 
         return res.status(200).json({
-            message: "Debt deleted successfully",
+            message: "Qarz muvaffaqiyatli o'chirildi",
             data: result.rows[0]
         });
     } catch (err) {
         console.error("Error deleting debt:", err);
         await logger(shop_id, user_id, `Delete debt failed - error: ${err.message}`);
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: "Server xatosi" });
     }
 };
 
@@ -344,7 +344,7 @@ export const getDebtStatistics = async (req, res) => {
 
     if (shop_id == null) {
         await logger(shop_id, user_id, "Get debt statistics failed - missing shop_id");
-        return res.status(400).json({ message: "Missing shop_id" });
+        return res.status(400).json({ message: "Shop_id etishmayapti" });
     }
 
     const query = `
@@ -365,7 +365,7 @@ export const getDebtStatistics = async (req, res) => {
         await logger(shop_id, user_id, "Fetched debt statistics");
 
         return res.status(200).json({
-            message: "Successfully fetched statistics",
+            message: "Statistika muvaffaqiyatli olingan",
             data: result.rows[0]
         });
     } catch (err) {
