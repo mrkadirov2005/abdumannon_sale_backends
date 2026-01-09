@@ -289,6 +289,7 @@ export const updateWagon = async (req, res) => {
           product_name,
           amount,
           price,
+          paid_amount,
         } = product;
 
         if (!product_id || !product_name || amount == null || price == null) {
@@ -301,6 +302,7 @@ export const updateWagon = async (req, res) => {
         return {
           product_id,
           product_name,
+          paid_amount,
           amount: parseFloat(amount),
           price: parseFloat(price),
           subtotal: parseFloat(subtotal.toFixed(2)),
