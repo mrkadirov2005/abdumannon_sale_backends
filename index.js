@@ -18,6 +18,7 @@ import reportRoutes from "./routes/reportroutes.js";
 import debtRoutes from "./routes/debtRoutes.js";
 import backupRoutes from "./routes/backupRoutes.js";
 import wagonRoutes from "./routes/wagonroutes.js";
+import financeRoutes from "./routes/financeRoutes.js";
 
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -184,6 +185,7 @@ app.use(validateToken);
 
 // Protected routes
 app.use("/statistics", statisticsRoutes);
+app.use("/finance", financeRoutes);
 app.use("/superadmin", superadminRoutes);
 app.use("/admin", adminroutes);
 app.use("/product", productRoutes);
