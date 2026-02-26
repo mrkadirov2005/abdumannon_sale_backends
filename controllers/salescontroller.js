@@ -252,7 +252,15 @@ export const getSaleById = async (req, res) => {
       return res.status(404).send({ message: "Sotuv topilmadi" });
     }
 
-    const productsResult = await client.query("SELECT * FROM soldproduct WHERE salesid = $1", [sale_id]);
+    const productsResult = await client.query(
+      `
+      SELECT sp.*, p.unit
+      FROM soldproduct sp
+      LEFT JOIN product p ON p.id = sp.productid
+      WHERE sp.salesid = $1
+      `,
+      [sale_id]
+    );
 
     await logger(target_id, user_id, `Fetched sale by ID: ${sale_id}`);
 
