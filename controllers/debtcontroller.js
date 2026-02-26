@@ -82,8 +82,8 @@ export const getDebtsByBranch = async (req, res) => {
 
     try {
         const result = await client.query(
-            "SELECT * FROM debt_table WHERE branch_id = $1 ORDER BY year DESC, month DESC, day DESC",
-            [branch_id]
+            "SELECT * FROM debt_table WHERE branch_id = $1 AND shop_id = $2 ORDER BY year DESC, month DESC, day DESC",
+            [branch_id, shop_id]
         );
 
         await logger(shop_id, user_id, `Fetched debts by branch: ${branch_id} - count: ${result.rows.length}`);
@@ -192,7 +192,21 @@ export const createDebt = async (req, res) => {
         RETURNING *;
     `;
 
-    const data=product_names.split(",").map(item=>item.trim())
+    const normalizeProductNames = (value) => {
+        if (Array.isArray(value)) {
+            return value.filter((v) => typeof v === "string" && v.trim() !== "");
+        }
+        if (typeof value === "string") {
+            if (value.trim() === "") return [];
+            return value
+                .split("|")
+                .map((v) => v.trim())
+                .filter((v) => v !== "");
+        }
+        return [];
+    };
+
+    const data = normalizeProductNames(product_names);
     
     try {
         const result = await client.query(
@@ -231,6 +245,22 @@ export const updateDebt = async (req, res) => {
         return res.status(400).json({ message: "Qarz ID talab qilinadi" });
     }
 
+    const normalizeProductNames = (value) => {
+        if (Array.isArray(value)) {
+            return value.filter((v) => typeof v === "string" && v.trim() !== "");
+        }
+        if (typeof value === "string") {
+            if (value.trim() === "") return null;
+            return value
+                .split("|")
+                .map((v) => v.trim())
+                .filter((v) => v !== "");
+        }
+        return null;
+    };
+
+    const normalizedProductNames = normalizeProductNames(product_names);
+
     const query = `
         UPDATE debt_table
         SET
@@ -246,7 +276,7 @@ export const updateDebt = async (req, res) => {
     try {
         const result = await client.query(
             query,
-            [name, amount, product_names, branch_id, isreturned, id]
+            [name, amount, normalizedProductNames, branch_id, isreturned, id]
         );
 
         if (result.rows.length === 0) {

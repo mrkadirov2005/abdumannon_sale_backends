@@ -92,12 +92,10 @@ router.get('/one', getSingleProduct);
  *             type: object
  *             required:
  *               - name
- *               - category_id
  *               - brand_id
  *               - scale
  *               - availability
  *               - total
- *               - net_price
  *               - sell_price
  *             properties:
  *               name:
@@ -112,6 +110,9 @@ router.get('/one', getSingleProduct);
  *               scale:
  *                 type: string
  *                 example: "1:10"
+ *               unit:
+ *                 type: string
+ *                 example: "kg"
  *               img_url:
  *                 type: string
  *                 example: "http://example.com/image.jpg"
@@ -197,6 +198,8 @@ router.post('/', createNewProduct);
  *               brand_id:
  *                 type: integer
  *               scale:
+ *                 type: string
+ *               unit:
  *                 type: string
  *               img_url:
  *                 type: string

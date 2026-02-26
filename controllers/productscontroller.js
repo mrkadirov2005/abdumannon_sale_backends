@@ -112,6 +112,7 @@ export const createNewProduct = async (req, res) => {
     category_id,
     brand_id,
     scale,
+    unit,
     img_url,
     availability,
     total,
@@ -133,12 +134,10 @@ export const createNewProduct = async (req, res) => {
 
   if (
     name == null ||
-    category_id == null ||
     brand_id == null ||
     scale == null ||
     availability == null ||
     total == null ||
-    net_price == null ||
     sell_price == null
     || branch==null
   ) {
@@ -152,15 +151,15 @@ export const createNewProduct = async (req, res) => {
   try {
     const insertQuery = `
       INSERT INTO product (
-        name, category_id, brand_id, scale, img_url, availability, total,
+        name, category_id, brand_id, scale, unit, img_url, availability, total,
         receival_date, expire_date, net_price, sell_price, supplier,
         cost_price, last_restocked, location, description, is_active, is_expired, shop_id,branch, createdat, updatedat
       )
       VALUES (
-        $1, $2, $3, $4, $5, $6, $7,
-        $8, $9, $10, $11, $12,
-        $13, $14, $15, $16, $17,
-        $18, $19,$20, now(), now()
+        $1, $2, $3, $4, $5, $6, $7, $8,
+        $9, $10, $11, $12, $13,
+        $14, $15, $16, $17, $18,
+        $19, $20,$21, now(), now()
       )
       RETURNING *;
     `;
@@ -170,12 +169,13 @@ export const createNewProduct = async (req, res) => {
       category_id,
       brand_id,
       scale,
+      unit || "pcs",
       img_url || null,
       availability,
       total,
       receival_date || null,
       expire_date || null,
-      net_price,
+      net_price == null ? 0 : net_price,
       sell_price,
       supplier || null,
       cost_price || null,
@@ -225,15 +225,15 @@ export const updateProduct = async (req, res) => {
 
   const {
     name,
-    category_id,
-    brand_id,
+      brand_id,
     scale,
+    unit,
     img_url,
     availability,
     total,
     receival_date,
     expire_date,
-    net_price,
+     net_price,
     sell_price,
     supplier,
     cost_price,
@@ -251,21 +251,22 @@ export const updateProduct = async (req, res) => {
         category_id = COALESCE($2, category_id),
         brand_id = COALESCE($3, brand_id),
         scale = COALESCE($4, scale),
-        img_url = COALESCE($5, img_url),
-        availability = COALESCE($6, availability),
-        total = COALESCE($7, total),
-        receival_date = COALESCE($8, receival_date),
-        expire_date = COALESCE($9, expire_date),
-        net_price = COALESCE($10, net_price),
-        sell_price = COALESCE($11, sell_price),
-        supplier = COALESCE($12, supplier),
-        cost_price = COALESCE($13, cost_price),
-        last_restocked = COALESCE($14, last_restocked),
-        location = COALESCE($15, location),
-        description = COALESCE($16, description),
-        is_active = COALESCE($17, is_active),
+        unit = COALESCE($5, unit),
+        img_url = COALESCE($6, img_url),
+        availability = COALESCE($7, availability),
+        total = COALESCE($8, total),
+        receival_date = COALESCE($9, receival_date),
+        expire_date = COALESCE($10, expire_date),
+        net_price = COALESCE($11, net_price),
+        sell_price = COALESCE($12, sell_price),
+        supplier = COALESCE($13, supplier),
+        cost_price = COALESCE($14, cost_price),
+        last_restocked = COALESCE($15, last_restocked),
+        location = COALESCE($16, location),
+        description = COALESCE($17, description),
+        is_active = COALESCE($18, is_active),
         updatedat = now()
-      WHERE id = $18
+      WHERE id = $19
       RETURNING *;
     `;
 
@@ -274,6 +275,7 @@ export const updateProduct = async (req, res) => {
       category_id || null,
       brand_id || null,
       scale || null,
+      unit || null,
       img_url || null,
       availability || null,
       total || null,
