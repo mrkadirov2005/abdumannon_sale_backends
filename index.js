@@ -2,6 +2,9 @@ import express from "express";
 import { connectDB } from "./config/dbcon.js";
 import cors from "cors"
 import {client} from "./config/dbcon.js"
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import superadminRoutes from "./routes/superadminroutes.js";
 import adminroutes from "./routes/adminroutes.js";
@@ -27,6 +30,27 @@ const app = express();
 const PORT = 3000;
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const logDir = path.join(__dirname, "logs");
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
+const logStream = fs.createWriteStream(path.join(logDir, "requests.log"), {
+  flags: "a",
+});
+
+// Log every incoming request with status and duration
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    const durationMs = Date.now() - start;
+    const line = `${new Date().toISOString()} ${req.method} ${req.originalUrl} ${res.statusCode} ${durationMs}ms ${req.ip}`;
+    logStream.write(line + "\n");
+  });
+  next();
+});
 
 
 
