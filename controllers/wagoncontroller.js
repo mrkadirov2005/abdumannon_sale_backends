@@ -165,6 +165,7 @@ export const createWagon = async (req, res) => {
         amount,
         paid_amount,
         price,
+        unit,
       } = product;
 
       if (!product_id || !product_name || amount == null || price == null || paid_amount == null) {
@@ -181,6 +182,7 @@ export const createWagon = async (req, res) => {
         paid_amount: parseFloat(paid_amount),
         price: parseFloat(price),
         subtotal: parseFloat(subtotal.toFixed(2)),
+        unit: unit || "pcs",
       };
     });
 
@@ -290,6 +292,7 @@ export const updateWagon = async (req, res) => {
           amount,
           price,
           paid_amount,
+          unit,
         } = product;
 
         if (!product_id || !product_name || amount == null || price == null) {
@@ -306,6 +309,7 @@ export const updateWagon = async (req, res) => {
           amount: parseFloat(amount),
           price: parseFloat(price),
           subtotal: parseFloat(subtotal.toFixed(2)),
+          unit: unit || "pcs",
         };
       });
 
