@@ -209,7 +209,8 @@ export const createNewProduct = async (req, res) => {
 
 // =========================== UPDATE PRODUCT ===========================
 export const updateProduct = async (req, res) => {
-  const { id } = req.body;
+  const payload = req.body || {};
+  const { id } = payload;
   const user_id = req.headers["uuid"] || null;
   const shop_id = req.headers["shop_id"] || null;
 
@@ -218,14 +219,15 @@ export const updateProduct = async (req, res) => {
     return res.status(400).json({ message: "Mahsulot ID talab qilinadi" });
   }
 
-  if (req.body == null || Object.keys(req.body).length === 0) {
+  if (Object.keys(payload).length <= 1) {
     await logger(shop_id, user_id, "Product update failed - no data provided");
     return res.status(400).json({ message: "Yangilash uchun hech qanday ma'lumot berilmadi" });
   }
 
   const {
     name,
-      brand_id,
+    category_id,
+    brand_id,
     scale,
     unit,
     img_url,
@@ -241,7 +243,7 @@ export const updateProduct = async (req, res) => {
     location,
     description,
     is_active
-  } = req.body;
+  } = payload;
 
   try {
     const updateQuery = `
@@ -277,14 +279,14 @@ export const updateProduct = async (req, res) => {
       scale || null,
       unit || null,
       img_url || null,
-      availability || null,
-      total || null,
+      availability != null && availability !== '' ? availability : null,
+      total != null && total !== '' ? total : null,
       receival_date || null,
       expire_date || null,
-      net_price || null,
-      sell_price || null,
+      net_price != null && net_price !== '' ? net_price : null,
+      sell_price != null && sell_price !== '' ? sell_price : null,
       supplier || null,
-      cost_price || null,
+      cost_price != null && cost_price !== '' ? cost_price : null,
       last_restocked || null,
       location || null,
       description || null,

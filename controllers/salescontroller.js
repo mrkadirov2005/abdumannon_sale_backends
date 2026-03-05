@@ -20,9 +20,6 @@ export const getSales = async (req, res) => {
 };
 
 export const createNewSale = async (req, res) => {
-  const { sale, products, shop_id, payment_method } = req.body;
-  const bodyBranch = req.body.branch;
-
   const target_id = extractJWT(req.headers["authorization"]);
   const user_id = req.headers["uuid"] || null;
 
@@ -30,6 +27,9 @@ export const createNewSale = async (req, res) => {
     await logger(target_id, user_id, "Create sale failed - missing request body");
     return res.status(400).send({ message: errorMessages.MISSING_FIELDS });
   }
+
+  const { sale, products, shop_id, payment_method } = req.body;
+  const bodyBranch = req.body.branch;
 
   try {
     if (sale == null || products == null || payment_method == null) {
