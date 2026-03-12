@@ -166,7 +166,11 @@ export const createDebt = async (req, res) => {
         branch_id,
         shop_id,
         admin_id,
-        isreturned = false
+        isreturned = false,
+        day: reqDay,
+        month: reqMonth,
+        year: reqYear,
+        created_at
     } = req.body;
     const user_id = req.headers["uuid"] || extractJWT(req.headers["authorization"]);
     
@@ -178,10 +182,33 @@ export const createDebt = async (req, res) => {
     }
 
     const id = uuidv4();
-    const currentDate = new Date();
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
+    const buildDateParts = () => {
+        if (
+            Number.isInteger(reqDay) &&
+            Number.isInteger(reqMonth) &&
+            Number.isInteger(reqYear)
+        ) {
+            return { day: reqDay, month: reqMonth, year: reqYear };
+        }
+        if (created_at) {
+            const parsed = new Date(created_at);
+            if (!isNaN(parsed.getTime())) {
+                return {
+                    day: parsed.getDate(),
+                    month: parsed.getMonth() + 1,
+                    year: parsed.getFullYear(),
+                };
+            }
+        }
+        const currentDate = new Date();
+        return {
+            day: currentDate.getDate(),
+            month: currentDate.getMonth() + 1,
+            year: currentDate.getFullYear(),
+        };
+    };
+
+    const { day, month, year } = buildDateParts();
 
     const query = `
         INSERT INTO debt_table (
