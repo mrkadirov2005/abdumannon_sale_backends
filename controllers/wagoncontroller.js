@@ -140,6 +140,8 @@ export const createWagon = async (req, res) => {
   const target_id = extractJWT(req.headers["authorization"]);
   const user_id = req.headers["uuid"] || null;
 
+
+  
   if (!wagon_number) {
     await logger(target_id, user_id, "Create wagon failed - missing wagon number");
     return res.status(400).json({
