@@ -134,6 +134,7 @@ export const createWagon = async (req, res) => {
     indicator = "none",
     shop_id = null,
     branch = null,
+    created_at = null,
   } = req.body;
 
   const target_id = extractJWT(req.headers["authorization"]);
@@ -188,10 +189,12 @@ export const createWagon = async (req, res) => {
 
     const wagon_id = uuidv4();
 
+    const createdAtValue = created_at || null;
+
     const result = await client.query(
       `INSERT INTO wagons 
-       (id, wagon_number, products, total, indicator, shop_id, branch, created_by) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+       (id, wagon_number, products, total, indicator, shop_id, branch, created_by, created_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, COALESCE($9, NOW())) 
        RETURNING *`,
       [
         wagon_id,
@@ -202,6 +205,7 @@ export const createWagon = async (req, res) => {
         shop_id,
         branch,
         user_id,
+        createdAtValue,
       ]
     );
 
@@ -243,6 +247,7 @@ export const updateWagon = async (req, res) => {
     indicator,
     shop_id,
     branch,
+    created_at,
   } = req.body;
 
   const target_id = extractJWT(req.headers["authorization"]);
@@ -344,6 +349,12 @@ export const updateWagon = async (req, res) => {
     if (branch !== undefined) {
       updates.push(`branch = $${paramCount}`);
       values.push(branch);
+      paramCount++;
+    }
+
+    if (created_at !== undefined) {
+      updates.push(`created_at = $${paramCount}`);
+      values.push(created_at || null);
       paramCount++;
     }
 
